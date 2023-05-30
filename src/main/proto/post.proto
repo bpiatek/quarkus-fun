@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "bpiatek.proto";
+option java_outer_classname = "PostProto";
+
+package post;
+
+service PostApi {
+
+  rpc GetPosts (PostRequest) returns (PostsResponse) {}
+
+  rpc SavePost (PostCreateRequest) returns (PostResponse) {}
+
+  rpc UpdatePost (PostUpdateRequest) returns (PostResponse) {}
+
+}
+
+message PostRequest {
+
+}
+
+message PostCreateRequest {
+  string author = 1;
+  string message = 2;
+}
+
+message PostUpdateRequest {
+  int64 id = 1;
+  string author = 2;
+  string message = 3;
+}
+
+message PostResponse {
+  int64 id = 1;
+  string author = 2;
+  string message = 3;
+}
+
+message PostsResponse {
+  repeated PostResponse posts = 1;
+}
+
+message PostDTO {
+  int64 id = 1;
+  string author = 2;
+  string message = 3;
+}
+
