@@ -6,19 +6,18 @@ import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import io.quarkus.grpc.GrpcService;
 import io.quarkus.logging.Log;
-import io.smallrye.mutiny.Uni;
 
 /**
  * Created by Bartosz Piatek on 28/05/2023
  */
 @GrpcService
-class PostApi extends PostApiGrpc.PostApiImplBase {
+class PostGrpcApi extends PostApiGrpc.PostApiImplBase {
 
     private final PostFacade postFacade;
     private final PostApiMapper apiMapper;
     private final RequestValidator requestValidator;
 
-    PostApi(PostFacade postFacade, PostApiMapper apiMapper, RequestValidator requestValidator) {
+    PostGrpcApi(PostFacade postFacade, PostApiMapper apiMapper, RequestValidator requestValidator) {
         this.postFacade = postFacade;
         this.apiMapper = apiMapper;
         this.requestValidator = requestValidator;
@@ -37,8 +36,7 @@ class PostApi extends PostApiGrpc.PostApiImplBase {
 
     @Override
     public void savePost(PostCreateRequest request, StreamObserver<PostResponse> responseObserver) {
-        Uni.createFrom()
-            .item(request)
+        requestValidator.validateCreateRequest(request)
             .map(apiMapper::toPostDto)
             .flatMap(postFacade::save)
             .map(apiMapper::mapToResponse)

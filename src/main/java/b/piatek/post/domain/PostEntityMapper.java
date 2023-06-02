@@ -16,7 +16,7 @@ import java.util.List;
 @ApplicationScoped
 class PostEntityMapper {
 
-    List<PostDTO> mapFromEntities(List<Post> posts) {
+    List<PostDTO> mapToDtos(List<Post> posts) {
         return posts.stream()
             .map(this::mapToDto)
             .toList();
@@ -38,14 +38,14 @@ class PostEntityMapper {
         );
     }
 
-    Post mapToPost(RowSet<Row> rows) {
+    Post mapToEntity(RowSet<Row> rows) {
         if (rows.rowCount() != 0) {
             return createPostFromRow(rows.iterator().next());
         }
         return new Post();
     }
 
-    List<Post> mapToPosts(RowSet<Row> rows) {
+    List<Post> mapToEntitiesList(RowSet<Row> rows) {
         List<Post> posts = new ArrayList<>();
         for (Row row : rows) {
             posts.add(createPostFromRow(row));

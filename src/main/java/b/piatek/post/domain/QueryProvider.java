@@ -34,18 +34,20 @@ class QueryProvider {
         if (isNotBlank(post.getAuthor())) {
             builder.append("author = '")
                 .append(post.getAuthor())
-                .append("', ");
+                .append("',");
         }
 
         if (isNotBlank(post.getMessage())) {
-            builder.append("message= '")
+            builder.append("message = '")
                 .append(post.getMessage())
-                .append("'");
+                .append("',");
         }
 
-        return removeEnd(builder.toString(), ",")
-               + " WHERE id = " + post.getId()
-               + " RETURNING *";
+        return builder.replace(builder.length() - 1, builder.length(), " ")
+            .append("WHERE id = ")
+            .append(post.getId())
+            .append(" RETURNING *")
+            .toString();
     }
 
 }

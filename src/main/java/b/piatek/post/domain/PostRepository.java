@@ -45,20 +45,20 @@ class PostRepository {
         return conn
             .query(update(post))
             .execute()
-            .map(entityMapper::mapToPost);
+            .map(entityMapper::mapToEntity);
     }
 
     private Uni<List<Post>> runGetAllQuery(SqlConnection conn) {
         return conn
             .query(selectAll())
             .execute()
-            .map(entityMapper::mapToPosts);
+            .map(entityMapper::mapToEntitiesList);
     }
 
     private Uni<Post> runInsertQuery(SqlConnection conn, Post post) {
         return conn
             .preparedQuery(insert())
             .execute(Tuple.of(post.getAuthor(), post.getMessage()))
-            .map(entityMapper::mapToPost);
+            .map(entityMapper::mapToEntity);
     }
 }
