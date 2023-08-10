@@ -25,7 +25,7 @@ class PostEntityMapper {
     PostDTO mapToDto(Post post) {
         return PostDTO.newBuilder()
             .setId(post.getId() != null ? post.getId() : 0)
-            .setAuthor(post.getAuthor() != null ? post.getAuthor() : EMPTY)
+            .setAuthorId(post.getAuthorId() != null ? post.getAuthorId() : 0)
             .setMessage(post.getMessage() != null ? post.getMessage() : EMPTY)
             .build();
     }
@@ -33,7 +33,7 @@ class PostEntityMapper {
     Post mapToEntity(PostDTO dto) {
         return new Post(
             dto.getId(),
-            dto.getAuthor(),
+            dto.getAuthorId(),
             dto.getMessage()
         );
     }
@@ -55,8 +55,8 @@ class PostEntityMapper {
 
     private Post createPostFromRow(Row row) {
         var id = row.getLong("id");
-        var author = row.getString("author");
+        var authorId = row.getLong("authorid");
         var message = row.getString("message");
-        return new Post(id, author, message);
+        return new Post(id, authorId, message);
     }
 }

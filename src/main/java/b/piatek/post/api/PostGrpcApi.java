@@ -1,11 +1,12 @@
 package b.piatek.post.api;
 
+import static b.piatek.common.CallbackFinalizer.completeWith;
+import static b.piatek.common.CallbackFinalizer.logError;
+
 import b.piatek.post.domain.PostFacade;
 import bpiatek.proto.*;
-import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import io.quarkus.grpc.GrpcService;
-import io.quarkus.logging.Log;
 
 /**
  * Created by Bartosz Piatek on 28/05/2023
@@ -24,8 +25,8 @@ class PostGrpcApi extends PostApiGrpc.PostApiImplBase {
     }
 
     @Override
-    public void getPosts(PostRequest request, StreamObserver<PostsResponse> responseObserver) {
-        postFacade.getPosts()
+    public void getPosts(GetPostsRequest request, StreamObserver<PostsResponse> responseObserver) {
+        postFacade.getPosts(request.getAuthorId(), request.getFullAuthor())
             .map(apiMapper::mapToPostsResponse)
             .subscribe()
             .with(
@@ -58,16 +59,5 @@ class PostGrpcApi extends PostApiGrpc.PostApiImplBase {
                 c -> completeWith(responseObserver, c),
                 t -> logError(t, responseObserver)
             );
-    }
-
-    private <T> void completeWith(StreamObserver<T> observer, T object) {
-        observer.onNext(object);
-        observer.onCompleted();
-    }
-
-    private <T> void logError(Throwable throwable, StreamObserver<T> responseObserver) {
-        responseObserver.onError(Status.UNKNOWN.withDescription("Error reason: " + throwable.getMessage())
-                                     .asException());
-        Log.error("Error reason: " + throwable.getMessage(), throwable);
     }
 }

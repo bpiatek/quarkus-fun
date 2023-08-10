@@ -4,11 +4,10 @@ option java_multiple_files = true;
 option java_package = "bpiatek.proto";
 option java_outer_classname = "PostProto";
 
-package post;
 
 service PostApi {
 
-  rpc GetPosts (PostRequest) returns (PostsResponse) {}
+  rpc GetPosts (GetPostsRequest) returns (PostsResponse) {}
 
   rpc SavePost (PostCreateRequest) returns (PostResponse) {}
 
@@ -16,25 +15,23 @@ service PostApi {
 
 }
 
-message PostRequest {
-
-}
-
 message PostCreateRequest {
-  string author = 1;
+  int64 author_id = 1;
   string message = 2;
 }
 
 message PostUpdateRequest {
   int64 id = 1;
-  string author = 2;
-  string message = 3;
+  string message = 2;
+  int64 author_id = 3;
 }
 
 message PostResponse {
   int64 id = 1;
-  string author = 2;
-  string message = 3;
+  string message = 2;
+  int64 author_id = 3;
+  string author_name = 4;
+  string author_nationality = 5;
 }
 
 message PostsResponse {
@@ -43,7 +40,62 @@ message PostsResponse {
 
 message PostDTO {
   int64 id = 1;
-  string author = 2;
-  string message = 3;
+  string message = 2;
+  int64 author_id = 3;
+  string author_name = 4;
+  string author_nationality = 5;
+}
+
+message GetPostsRequest {
+  int64 author_id = 1;
+  bool fullAuthor = 2;
+}
+
+
+
+service AuthorApi {
+
+  rpc GetAuthors (GetAuthorsRequest) returns (AuthorsResponse) {}
+
+  rpc SaveAuthor (AuthorCreateRequest) returns (AuthorResponse) {}
+
+  rpc UpdateAuthor (AuthorUpdateRequest) returns (AuthorResponse) {}
+
+  rpc GetById (GetAuthorRequest) returns (AuthorResponse) {}
+}
+
+message GetAuthorsRequest {
+  bool withPosts = 1;
+}
+
+message GetAuthorRequest {
+  int64 author_id = 1;
+}
+
+message AuthorCreateRequest {
+  string name = 1;
+  string nationality = 2;
+}
+
+message AuthorUpdateRequest {
+  int64 id = 1;
+  string name = 2;
+  string nationality = 3;
+}
+
+message AuthorResponse {
+  int64 id = 1;
+  string name = 2;
+  string nationality = 3;
+}
+
+message AuthorsResponse {
+  repeated AuthorResponse authors = 1;
+}
+
+message AuthorDTO {
+  int64 id = 1;
+  string name = 2;
+  string nationality = 3;
 }
 

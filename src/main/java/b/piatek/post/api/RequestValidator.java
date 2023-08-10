@@ -1,5 +1,6 @@
 package b.piatek.post.api;
 
+
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import bpiatek.proto.PostCreateRequest;
@@ -18,7 +19,7 @@ class RequestValidator {
            throw new IllegalArgumentException("Id must bo provided and can not be 0!");
         }
 
-        if (isBlank(request.getAuthor()) && isBlank(request.getMessage())) {
+        if (request.getAuthorId() == 0 && isBlank(request.getMessage())) {
             throw new IllegalArgumentException("At least one field must be provided for update!");
         }
 
@@ -26,7 +27,7 @@ class RequestValidator {
     }
 
     Uni<PostCreateRequest> validateCreateRequest(PostCreateRequest request) {
-        if (isBlank(request.getAuthor()) || isBlank(request.getMessage())) {
+        if (request.getAuthorId() == 0 || isBlank(request.getMessage())) {
             throw new IllegalArgumentException("Both author and message must be provided!");
         }
 

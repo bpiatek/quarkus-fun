@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "bpiatek.proto.author";
+option java_outer_classname = "AuthorProto";
+
+service AuthorApi {
+
+  rpc GetAuthors (GetAuthorsRequest) returns (AuthorsResponse) {}
+
+  rpc SaveAuthor (AuthorCreateRequest) returns (AuthorResponse) {}
+
+  rpc UpdateAuthor (AuthorUpdateRequest) returns (AuthorResponse) {}
+
+}
+
+message GetAuthorsRequest {
+  bool withPosts = 1;
+}
+
+message AuthorCreateRequest {
+  string name = 1;
+  string nationality = 2;
+}
+
+message AuthorUpdateRequest {
+  int64 id = 1;
+  string name = 2;
+  string nationality = 3;
+}
+
+message AuthorResponse {
+  int64 id = 1;
+  string name = 2;
+  string nationality = 3;
+}
+
+message AuthorsResponse {
+  repeated AuthorResponse authors = 1;
+}
+
+message AuthorDTO {
+  int64 id = 1;
+  string name = 2;
+  string nationality = 3;
+}

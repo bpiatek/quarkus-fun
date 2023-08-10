@@ -13,7 +13,7 @@ class PostApiMapper {
 
     PostDTO toPostDto(PostCreateRequest request) {
         return PostDTO.newBuilder()
-            .setAuthor(request.getAuthor())
+            .setAuthorId(request.getAuthorId())
             .setMessage(request.getMessage())
             .build();
     }
@@ -21,7 +21,7 @@ class PostApiMapper {
     PostResponse mapToResponse(PostDTO postDto) {
         return PostResponse.newBuilder()
             .setId(postDto.getId())
-            .setAuthor(postDto.getAuthor())
+            .setAuthorId(postDto.getAuthorId())
             .setMessage(postDto.getMessage())
             .build();
     }
@@ -39,7 +39,7 @@ class PostApiMapper {
     PostDTO toPostDto(PostUpdateRequest request) {
         return PostDTO.newBuilder()
             .setId(request.getId())
-            .setAuthor(request.getAuthor())
+            .setAuthorId(request.getAuthorId())
             .setMessage(request.getMessage())
             .build();
     }

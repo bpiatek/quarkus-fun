@@ -22,6 +22,8 @@
         <docker-java.version>3.3.0</docker-java.version>
         <testcontainers.version>1.18.2</testcontainers.version>
         <java-dev-jna.version>5.9.0</java-dev-jna.version>
+        <vertx-jooq.version>6.5.5</vertx-jooq.version>
+        <jooq.version>3.18.5</jooq.version>
     </properties>
 
     <dependencyManagement>
@@ -65,9 +67,25 @@
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.github.jklingsporn</groupId>
+            <artifactId>vertx-jooq-mutiny-reactive</artifactId>
+            <version>${vertx-jooq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.jklingsporn</groupId>
+            <artifactId>vertx-jooq-generate</artifactId>
+            <version>${vertx-jooq.version}</version>
+        </dependency>
+        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-flyway</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -171,6 +189,9 @@
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
+                    <includes>
+                        <include>b.piatek.config.*.java</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
@@ -203,6 +224,86 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <!-- Specify the maven code generator plugin -->
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${jooq.version}</version>
+
+                <!-- The plugin should hook into the generate goal -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+                <dependencies>
+<!--                    <dependency>-->
+<!--                        <groupId>org.postgresql</groupId>-->
+<!--                        <artifactId>postgresql</artifactId>-->
+<!--                        <version>42.2.2</version>-->
+<!--                    </dependency>-->
+                    <dependency>
+                        <groupId>io.github.jklingsporn</groupId>
+                        <artifactId>vertx-jooq-generate</artifactId>
+                        <version>6.5.5</version>
+                    </dependency>
+                </dependencies>
+
+                <!-- Specify the plugin configuration.
+                     The configuration format is the same as for the standalone code generator -->
+                <configuration>
+                    <!-- JDBC connection parameters -->
+                    <jdbc>
+                        <driver>org.postgresql.Driver</driver>
+                        <url>jdbc:postgresql://psql01.mikr.us:5432/db_i198</url>
+                        <user>i198</user>
+                        <password>2995_a96f9c</password>
+                    </jdbc>
+
+                    <!-- Generator parameters -->
+                    <generator>
+                        <name>io.github.jklingsporn.vertx.jooq.generate.mutiny.MutinyReactiveVertxGenerator</name>
+
+<!--                        <name>b.piatek.config.QuarkusReactiveGenerator</name>-->
+                        <!-- use 'io.github.jklingsporn.vertx.jooq.generate.mutiny.MutinyReactiveGuiceVertxGenerator' to enable Guice DI -->
+                        <database>
+                            <name>org.jooq.meta.postgres.PostgresDatabase</name>
+                            <includes>.*</includes>
+                            <inputSchema>public</inputSchema>
+                            <outputSchema>public</outputSchema>
+                            <unsignedTypes>false</unsignedTypes>
+                            <forcedTypes>
+                                <!-- Convert tinyint to boolean -->
+                                <forcedType>
+                                    <name>BOOLEAN</name>
+                                    <types>(?i:TINYINT)</types>
+                                </forcedType>
+                            </forcedTypes>
+                        </database>
+                        <target>
+                            <!-- This is where jOOQ will put your files -->
+                            <packageName>b.piatek.schema</packageName>
+                            <directory>src/main/generated</directory>
+                        </target>
+                        <generate>
+                            <interfaces>true</interfaces>
+                            <daos>true</daos>
+                            <fluentSetters>true</fluentSetters>
+                        </generate>
+
+
+                        <strategy>
+                            <name>io.github.jklingsporn.vertx.jooq.generate.VertxGeneratorStrategy</name>
+                        </strategy>
+                    </generator>
+                </configuration>
+            </plugin>
+
+
         </plugins>
     </build>
     <profiles>

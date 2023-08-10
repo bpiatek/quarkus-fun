@@ -7,20 +7,20 @@ package b.piatek.post.domain;
 class Post {
 
     private Long id;
-    private String author;
+    private Long authorId;
     private String message;
 
     public Post() {
     }
 
-    Post(String author, String message) {
-        this.author = author;
+    Post(Long authorId, String message) {
+        this.authorId = authorId;
         this.message = message;
     }
 
-    Post(Long id, String author, String message) {
+    Post(Long id, Long authorId, String message) {
         this.id = id;
-        this.author = author;
+        this.authorId = authorId;
         this.message = message;
     }
 
@@ -28,8 +28,8 @@ class Post {
         return id;
     }
 
-    public String getAuthor() {
-        return author;
+    public Long getAuthorId() {
+        return authorId;
     }
 
     public String getMessage() {

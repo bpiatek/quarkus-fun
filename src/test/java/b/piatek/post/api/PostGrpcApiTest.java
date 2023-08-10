@@ -1,9 +1,6 @@
 package b.piatek.post.api;
 
-import bpiatek.proto.PostApiGrpc;
-import bpiatek.proto.PostCreateRequest;
-import bpiatek.proto.PostResponse;
-import bpiatek.proto.PostUpdateRequest;
+import bpiatek.proto.*;
 import io.grpc.StatusRuntimeException;
 import io.quarkus.grpc.GrpcClient;
 import io.quarkus.test.junit.QuarkusTest;
@@ -19,8 +16,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @QuarkusTest
 class PostGrpcApiTest {
 
-  public static final String SOME_AUTHOR = "Some name";
-  public static final String NEW_AUTHOR = "New name";
+  public static final Long AUTHOR_ID = 1L;
+  public static final Long NEW_AUTHOR_ID = 2L;
   public static final String SOME_MESSAGE = "Some message";
   public static final String NEW_MESSAGE = "New message";
 
@@ -41,7 +38,7 @@ class PostGrpcApiTest {
     var postFromDb = insertPost();
     var request = PostUpdateRequest.newBuilder()
         .setId(postFromDb.getId())
-        .setAuthor(NEW_AUTHOR)
+        .setAuthorId(NEW_AUTHOR_ID)
         .setMessage(NEW_MESSAGE)
         .build();
 
@@ -51,7 +48,7 @@ class PostGrpcApiTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(response.getId()).isEqualTo(postFromDb.getId());
-      softly.assertThat(response.getAuthor()).isEqualTo(NEW_AUTHOR);
+      softly.assertThat(response.getAuthorId()).isEqualTo(NEW_AUTHOR_ID);
       softly.assertThat(response.getMessage()).isEqualTo(NEW_MESSAGE);
     });
   }
@@ -62,7 +59,7 @@ class PostGrpcApiTest {
     var postFromDb = insertPost();
     var request = PostUpdateRequest.newBuilder()
         .setId(postFromDb.getId())
-        .setAuthor(NEW_AUTHOR)
+        .setAuthorId(NEW_AUTHOR_ID)
         .build();
 
     // when
@@ -71,7 +68,7 @@ class PostGrpcApiTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(response.getId()).isEqualTo(postFromDb.getId());
-      softly.assertThat(response.getAuthor()).isEqualTo(NEW_AUTHOR);
+      softly.assertThat(response.getAuthorId()).isEqualTo(NEW_AUTHOR_ID);
       softly.assertThat(response.getMessage()).isEqualTo(postFromDb.getMessage());
     });
   }
@@ -91,7 +88,7 @@ class PostGrpcApiTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(response.getId()).isEqualTo(postFromDb.getId());
-      softly.assertThat(response.getAuthor()).isEqualTo(postFromDb.getAuthor());
+      softly.assertThat(response.getAuthorId()).isEqualTo(postFromDb.getAuthorId());
       softly.assertThat(response.getMessage()).isEqualTo(NEW_MESSAGE);
     });
   }
@@ -102,7 +99,7 @@ class PostGrpcApiTest {
     var postFromDb = insertPost();
     var request = PostUpdateRequest.newBuilder()
         .setMessage(NEW_MESSAGE)
-        .setAuthor(NEW_AUTHOR)
+        .setAuthorId(NEW_AUTHOR_ID)
         .build();
 
     // then
@@ -118,7 +115,7 @@ class PostGrpcApiTest {
     var request = PostUpdateRequest.newBuilder()
         .setId(0)
         .setMessage(NEW_MESSAGE)
-        .setAuthor(NEW_AUTHOR)
+        .setAuthorId(NEW_AUTHOR_ID)
         .build();
 
     // then
@@ -131,7 +128,7 @@ class PostGrpcApiTest {
   void shouldSuccessfullySavePost() {
     // given
     var request = PostCreateRequest.newBuilder()
-        .setAuthor(SOME_AUTHOR)
+        .setAuthorId(AUTHOR_ID)
         .setMessage(SOME_MESSAGE)
         .build();
 
@@ -141,7 +138,7 @@ class PostGrpcApiTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(response.getId()).isGreaterThan(0);
-      softly.assertThat(response.getAuthor()).isEqualTo(request.getAuthor());
+      softly.assertThat(response.getAuthorId()).isEqualTo(request.getAuthorId());
       softly.assertThat(response.getMessage()).isEqualTo(request.getMessage());
     });
   }
@@ -163,7 +160,7 @@ class PostGrpcApiTest {
   void shouldFailToSavePostWhenMessageNotProvided() {
     // given
     var request = PostCreateRequest.newBuilder()
-        .setAuthor(SOME_AUTHOR)
+        .setAuthorId(AUTHOR_ID)
         .build();
 
     // then
@@ -187,7 +184,7 @@ class PostGrpcApiTest {
 
   private PostResponse insertPost() {
     var request = PostCreateRequest.newBuilder()
-        .setAuthor(SOME_AUTHOR)
+        .setAuthorId(AUTHOR_ID)
         .setMessage(SOME_MESSAGE)
         .build();
 

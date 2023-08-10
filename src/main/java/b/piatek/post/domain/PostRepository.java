@@ -31,9 +31,9 @@ class PostRepository {
             .withTransaction(conn -> runInsertQuery(conn, post));
     }
 
-    Uni<List<Post>> getAll() {
+    Uni<List<Post>> getAll(long authorId) {
         return pool
-            .withTransaction(this::runGetAllQuery);
+            .withTransaction(conn -> runGetAllQuery(authorId, conn));
     }
 
     Uni<Post> updatePost(Post post) {
@@ -48,9 +48,9 @@ class PostRepository {
             .map(entityMapper::mapToEntity);
     }
 
-    private Uni<List<Post>> runGetAllQuery(SqlConnection conn) {
+    private Uni<List<Post>> runGetAllQuery(long authorId, SqlConnection conn) {
         return conn
-            .query(selectAll())
+            .query(selectAll(authorId))
             .execute()
             .map(entityMapper::mapToEntitiesList);
     }
@@ -58,7 +58,7 @@ class PostRepository {
     private Uni<Post> runInsertQuery(SqlConnection conn, Post post) {
         return conn
             .preparedQuery(insert())
-            .execute(Tuple.of(post.getAuthor(), post.getMessage()))
+            .execute(Tuple.of(post.getAuthorId(), post.getMessage()))
             .map(entityMapper::mapToEntity);
     }
 }

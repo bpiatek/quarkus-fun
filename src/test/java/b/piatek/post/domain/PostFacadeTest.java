@@ -15,8 +15,8 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @Transactional
 class PostFacadeTest {
 
-  public static final String SOME_AUTHOR = "Some author";
-  public static final String NEW_AUTHOR = "New author";
+  public static final Long AUTHOR_ID = 1L;
+  public static final Long NEW_AUTHOR_ID = 2L;
   public static final String SOME_MESSAGE = "Some post message";
   public static final String NEW_MESSAGE = "Some NEW message";
 
@@ -35,7 +35,7 @@ class PostFacadeTest {
   void shouldSavePost() {
     // given
     var postDTO = PostDTO.newBuilder()
-        .setAuthor(SOME_AUTHOR)
+        .setAuthorId(AUTHOR_ID)
         .setMessage(SOME_MESSAGE)
         .build();
 
@@ -47,7 +47,7 @@ class PostFacadeTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(savedPost.getId()).isGreaterThan(0L);
-      softly.assertThat(savedPost.getAuthor()).isEqualTo(SOME_AUTHOR);
+      softly.assertThat(savedPost.getAuthorId()).isEqualTo(AUTHOR_ID);
       softly.assertThat(savedPost.getMessage()).isEqualTo(SOME_MESSAGE);
     });
   }
@@ -59,7 +59,7 @@ class PostFacadeTest {
     insertPost();
 
     // when
-    var postsFromDB = postFacade.getPosts()
+    var postsFromDB = postFacade.getPosts(0, false)
         .await()
         .indefinitely();
 
@@ -73,7 +73,7 @@ class PostFacadeTest {
     var post = insertPost();
     var updateRequest = PostDTO.newBuilder()
         .setId(post.getId())
-        .setAuthor(NEW_AUTHOR)
+        .setAuthorId(NEW_AUTHOR_ID)
         .build();
 
     // when
@@ -84,7 +84,7 @@ class PostFacadeTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(updatedPost.getId()).isEqualTo(post.getId());
-      softly.assertThat(updatedPost.getAuthor()).isEqualTo(NEW_AUTHOR);
+      softly.assertThat(updatedPost.getAuthorId()).isEqualTo(NEW_AUTHOR_ID);
       softly.assertThat(updatedPost.getMessage()).isEqualTo(post.getMessage());
     });
   }
@@ -106,7 +106,7 @@ class PostFacadeTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(updatedPost.getId()).isEqualTo(post.getId());
-      softly.assertThat(updatedPost.getAuthor()).isEqualTo(post.getAuthor());
+      softly.assertThat(updatedPost.getAuthorId()).isEqualTo(post.getAuthorId());
       softly.assertThat(updatedPost.getMessage()).isEqualTo(NEW_MESSAGE);
     });
   }
@@ -117,7 +117,7 @@ class PostFacadeTest {
     var post = insertPost();
     var updateRequest = PostDTO.newBuilder()
         .setId(post.getId())
-        .setAuthor(NEW_AUTHOR)
+        .setAuthorId(NEW_AUTHOR_ID)
         .setMessage(NEW_MESSAGE)
         .build();
 
@@ -129,7 +129,7 @@ class PostFacadeTest {
     // then
     assertSoftly(softly -> {
       softly.assertThat(updatedPost.getId()).isEqualTo(post.getId());
-      softly.assertThat(updatedPost.getAuthor()).isEqualTo(NEW_AUTHOR);
+      softly.assertThat(updatedPost.getAuthorId()).isEqualTo(NEW_AUTHOR_ID);
       softly.assertThat(updatedPost.getMessage()).isEqualTo(NEW_MESSAGE);
     });
   }
@@ -144,7 +144,7 @@ class PostFacadeTest {
 
   private PostDTO insertPost() {
     PostDTO postDTO = PostDTO.newBuilder()
-        .setAuthor(SOME_AUTHOR)
+        .setAuthorId(AUTHOR_ID)
         .setMessage(SOME_MESSAGE)
         .build();
     return postFacade.save(postDTO)

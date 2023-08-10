@@ -1,5 +1,6 @@
 package b.piatek.post.domain;
 
+import b.piatek.author.domain.AuthorFacade;
 import jakarta.enterprise.inject.Produces;
 
 import javax.inject.Singleton;
@@ -8,8 +9,10 @@ import javax.inject.Singleton;
 class PostConfiguration {
 
   @Produces
-  PostFacade postFacade(PostRepository repository,
-                        PostEntityMapper mapper) {
-    return new PostFacade(repository, mapper);
+  PostFacade postFacade(
+      AuthorFacade authorFacade,
+      PostRepository repository,
+      PostEntityMapper mapper) {
+    return new PostFacade(authorFacade, repository, mapper);
   }
 }

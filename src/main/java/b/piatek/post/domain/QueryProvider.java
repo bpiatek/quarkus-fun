@@ -1,7 +1,7 @@
 package b.piatek.post.domain;
 
+import static java.util.Objects.isNull;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.removeEnd;
 
 /**
  * Created by Bartosz Piatek on 28/05/2023
@@ -11,18 +11,23 @@ class QueryProvider {
     private QueryProvider() {
     }
 
-    static String selectAll() {
-        return  """
+    static String selectAll(long authorId) {
+        var query =  """
             SELECT
-                id, author, message
+                id, authorId, message
             FROM
                 post
             """;
+        if (authorId > 0) {
+            query = query + " WHERE authorId = " + authorId;
+        }
+
+        return query;
     }
 
     static String insert() {
         return """
-            INSERT INTO post (author, message)
+            INSERT INTO post (authorId, message)
             VALUES ($1, $2)
             RETURNING *
             """;
@@ -31,9 +36,9 @@ class QueryProvider {
     static String update(Post post) {
         var builder = new StringBuilder();
         builder.append("UPDATE post SET ");
-        if (isNotBlank(post.getAuthor())) {
-            builder.append("author = '")
-                .append(post.getAuthor())
+        if (!isNull(post.getAuthorId())) {
+            builder.append("authorId = '")
+                .append(post.getAuthorId())
                 .append("',");
         }
 
