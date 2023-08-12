@@ -1,17 +1,34 @@
 syntax = "proto3";
 
+option go_package = "dupa.pl/pl";
+package posts.v1;
 option java_multiple_files = true;
 option java_package = "bpiatek.proto";
 option java_outer_classname = "PostProto";
 
+import "google/api/annotations.proto";
+import "google/api/http.proto";
+
 
 service PostApi {
 
-  rpc GetPosts (GetPostsRequest) returns (PostsResponse) {}
+  rpc GetPosts (GetPostsRequest) returns (PostsResponse) {
+    option (google.api.http) = {
+      get: "/GetPosts"
+    };
+  }
 
-  rpc SavePost (PostCreateRequest) returns (PostResponse) {}
+  rpc SavePost (PostCreateRequest) returns (PostResponse) {
+    option (google.api.http) = {
+      post: "/SavePost"
+    };
+  }
 
-  rpc UpdatePost (PostUpdateRequest) returns (PostResponse) {}
+  rpc UpdatePost (PostUpdateRequest) returns (PostResponse) {
+    option (google.api.http) = {
+      put: "/UpdatePost"
+    };
+  }
 
 }
 

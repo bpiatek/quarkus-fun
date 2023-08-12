@@ -1,4 +1,7 @@
 syntax = "proto3";
+option go_package = "dupa.pl/pl";
+
+package author.v1;
 
 option java_multiple_files = true;
 option java_package = "bpiatek.proto.author";
