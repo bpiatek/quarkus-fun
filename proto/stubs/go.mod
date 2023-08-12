@@ -18,6 +18,7 @@ require (
 )
 
 require (
+	github.com/bpiatek/quarkus-fun v0.0.0-20230812191505-004cf7d81f07 // indirect
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0 // indirect
 	github.com/kr/pretty v0.3.1 // indirect
 	golang.org/x/net v0.14.0 // indirect
