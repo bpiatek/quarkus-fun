@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	gw "github.com/bpiatek/quarkus-fun/" // Update
+	gw "github.com/bpiatek/quarkus-fun/proto/stubs" // Update
 )
 
 var (
