@@ -5,6 +5,8 @@ github.com/antihax/optional v1.0.0 h1:xK2lYat7ZLaVVcIuj82J8kIro4V6kDe0AUDFboUCwc
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/bpiatek/quarkus-fun v0.0.0-20230812191505-004cf7d81f07 h1:7EDEE7NwK9W+rqxohqN2KOgfZqBo8+WXHBbIyXpQyuY=
 github.com/bpiatek/quarkus-fun v0.0.0-20230812191505-004cf7d81f07/go.mod h1:jBUF4Nl7JCjY2YTdO8BlOpItkZ8AUMWOW9J8mx7Zowc=
+github.com/bpiatek/quarkus-fun v0.0.0-20230812193225-91009b5e9792 h1:JqacMgZdeJZxCQzT5pxAviyId3G8/UR0F+o8sKjDiYk=
+github.com/bpiatek/quarkus-fun v0.0.0-20230812193225-91009b5e9792/go.mod h1:jBUF4Nl7JCjY2YTdO8BlOpItkZ8AUMWOW9J8mx7Zowc=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=

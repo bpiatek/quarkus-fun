@@ -1,4 +1,4 @@
-package main
+package gateway
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	gw "github.com/bpiatek/quarkus-fun/proto/stubs" // Update
+	gw "github.com/bpiatek/quarkus-fun/proto/posts/v1" // Update
 )
 
 var (
